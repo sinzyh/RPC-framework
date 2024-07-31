@@ -15,7 +15,7 @@ import java.lang.reflect.Method;
  */
 public class ServiceProxy implements InvocationHandler {
 
-    //consumer每次滴啊用注册的方法时，会先调用Invoke()
+    //consumer每次调用注册的方法时，会先调用Invoke()
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         JdkSerializer serializer = new JdkSerializer();
