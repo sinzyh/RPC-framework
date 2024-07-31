@@ -2,9 +2,12 @@ package com.z.rpc.proxy;
 
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
+import com.z.rpc.RpcApplication;
+import com.z.rpc.config.RpcConfig;
 import com.z.rpc.model.RpcRequest;
 import com.z.rpc.model.RpcResponse;
 import com.z.rpc.serializer.JdkSerializer;
+import com.z.rpc.serializer.SerializerFactory;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
@@ -15,10 +18,12 @@ import java.lang.reflect.Method;
  */
 public class ServiceProxy implements InvocationHandler {
 
+
     //consumer每次调用注册的方法时，会先调用Invoke()
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        JdkSerializer serializer = new JdkSerializer();
+
+        final JdkSerializer serializer = (JdkSerializer) SerializerFactory.getSerializer(RpcApplication.getRpcConfig().getSerialize());
 
         //发请求
         RpcRequest rpcRequest = RpcRequest.builder()

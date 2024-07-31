@@ -1,5 +1,6 @@
 package com.z.rpc.config;
 
+import com.z.rpc.serializer.SerializerKeys;
 import lombok.Data;
 
 /**
@@ -36,4 +37,9 @@ public class RpcConfig {
      * 是否开启模拟调用
      */
     private boolean mock = false;
+
+    /**
+     * 指定序列化方式
+     */
+    private String serialize = SerializerKeys.JDK;
 }
