@@ -1,17 +1,24 @@
 package com.z.rpc.proxy;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import com.z.rpc.RpcApplication;
 import com.z.rpc.config.RpcConfig;
+import com.z.rpc.constant.RpcConstant;
 import com.z.rpc.model.RpcRequest;
 import com.z.rpc.model.RpcResponse;
+import com.z.rpc.model.ServiceMetaInfo;
+import com.z.rpc.registry.Registry;
+import com.z.rpc.registry.RegistryFactory;
 import com.z.rpc.serializer.JdkSerializer;
+import com.z.rpc.serializer.Serializer;
 import com.z.rpc.serializer.SerializerFactory;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.util.List;
 
 /**
  * jdk动态代理
@@ -23,7 +30,7 @@ public class ServiceProxy implements InvocationHandler {
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 
-        final JdkSerializer serializer = (JdkSerializer) SerializerFactory.getSerializer(RpcApplication.getRpcConfig().getSerialize());
+        final Serializer serializer = SerializerFactory.getSerializer(RpcApplication.getRpcConfig().getSerializer());
 
         //发请求
         RpcRequest rpcRequest = RpcRequest.builder()
@@ -33,10 +40,25 @@ public class ServiceProxy implements InvocationHandler {
                 .args(args)
                 .build();
         try {
+            //序列化
             byte[] bodyBytes = serializer.serialize(rpcRequest);
 
             //todo 这里地址被硬编码了，需要使用注册中心和服务发现机制
-            try(HttpResponse httpResponse= HttpRequest.post("http://localhost:8123")
+            RpcConfig rpcConfig = RpcApplication.getRpcConfig();
+            Registry registry = RegistryFactory.getInstance(rpcConfig.getRegistryConfig().getRegistry());
+            ServiceMetaInfo serviceMetaInfo = new ServiceMetaInfo();
+            serviceMetaInfo.setServiceName(rpcRequest.getServiceName());
+            serviceMetaInfo.setServiceVersion(RpcConstant.DEFAULT_SERVICE_VERSION);
+            List<ServiceMetaInfo> serviceMetaInfoList = registry.serviceDiscovery(serviceMetaInfo.getServiceKey());
+            if (CollUtil.isEmpty(serviceMetaInfoList)){
+                throw new RuntimeException("暂无服务地址");
+            }
+
+            //暂时取第一个
+            ServiceMetaInfo selectServiceMetaInfo_zore = serviceMetaInfoList.get(0);
+
+
+            try(HttpResponse httpResponse= HttpRequest.post(selectServiceMetaInfo_zore.getServiceAddress())
                     .body(bodyBytes)
                     .execute()) {
                 byte[] result = httpResponse.bodyBytes();

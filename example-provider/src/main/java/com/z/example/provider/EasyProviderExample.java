@@ -1,6 +1,6 @@
-package com.z.example.consumer.provider;
+package com.z.example.provider;
 
-import com.z.example.consumer.common.service.UserService;
+import com.z.example.common.service.UserService;
 import com.z.rpc.registry.LocalRegistry;
 import com.z.rpc.server.VertxHttpServer;
 

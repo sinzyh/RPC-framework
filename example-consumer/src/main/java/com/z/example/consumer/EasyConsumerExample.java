@@ -1,7 +1,7 @@
 package com.z.example.consumer;
 
-import com.z.example.consumer.common.model.User;
-import com.z.example.consumer.common.service.UserService;
+import com.z.example.common.model.User;
+import com.z.example.common.service.UserService;
 import com.z.rpc.proxy.ServiceProxyFactory;
 
 /**
@@ -10,7 +10,7 @@ import com.z.rpc.proxy.ServiceProxyFactory;
 public class EasyConsumerExample {
 
     public static void main(String[] args) {
-        //todo 获取UserService的实现类对象
+        //获取UserService的实现类对象
         UserService userService= ServiceProxyFactory.getProxy(UserService.class);
         User user = new User();
         user.setName("zyh");

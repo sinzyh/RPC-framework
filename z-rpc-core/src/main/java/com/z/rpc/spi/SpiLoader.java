@@ -124,7 +124,7 @@ public class SpiLoader {
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         loadAll();
         System.out.println(loaderMap);
-        Serializer serializer = getInstance(Serializer.class, "e");
+        Serializer serializer = getInstance(Serializer.class, "hessian");
         System.out.println(serializer);
     }
 }

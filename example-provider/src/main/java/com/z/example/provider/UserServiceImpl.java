@@ -1,7 +1,7 @@
-package com.z.example.consumer.provider;
+package com.z.example.provider;
 
-import com.z.example.consumer.common.model.User;
-import com.z.example.consumer.common.service.UserService;
+import com.z.example.common.model.User;
+import com.z.example.common.service.UserService;
 
 public class UserServiceImpl implements UserService {
     public User getUser(User user) {

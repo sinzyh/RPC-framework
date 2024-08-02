@@ -1,0 +1,3 @@
+com.z.rpc.serializer.JdkSerializer
+com.z.rpc.serializer.HessianSerializer
+com.z.rpc.serializer.KryoSerializer

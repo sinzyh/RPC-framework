@@ -1,4 +1,4 @@
-package com.z.example.consumer.common.model;
+package com.z.example.common.model;
 
 import java.io.Serializable;
 

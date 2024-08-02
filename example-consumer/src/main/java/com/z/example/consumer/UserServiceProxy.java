@@ -2,8 +2,8 @@ package com.z.example.consumer;
 
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
-import com.z.example.consumer.common.model.User;
-import com.z.example.consumer.common.service.UserService;
+import com.z.example.common.model.User;
+import com.z.example.common.service.UserService;
 import com.z.rpc.model.RpcRequest;
 import com.z.rpc.model.RpcResponse;
 import com.z.rpc.serializer.JdkSerializer;
