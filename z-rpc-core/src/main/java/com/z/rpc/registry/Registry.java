@@ -40,7 +40,15 @@ public interface Registry {
      */
     void destroy();
 
+    /**
+     * 心跳检测
+     */
+    void heartbeat();
 
+    /**
+     * 消费者鉴定服务，便于及时更新缓存
+     */
+    void consumerWatch(String serviceNodeKey);
 
 
 }
