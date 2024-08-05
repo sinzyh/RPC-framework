@@ -29,7 +29,7 @@ public class ServiceMetaInfo {
     /**
      * 服务分组(暂未实现)
      */
-    private String serviceGroup = "defulat";
+    private String serviceGroup = "default";
 
     /**
      * 获取服务键名
