@@ -6,6 +6,8 @@ import cn.hutool.http.HttpResponse;
 import com.z.rpc.RpcApplication;
 import com.z.rpc.config.RpcConfig;
 import com.z.rpc.constant.RpcConstant;
+import com.z.rpc.loadbalancer.LoadBalancer;
+import com.z.rpc.loadbalancer.LoadBalancerFactory;
 import com.z.rpc.model.RpcRequest;
 import com.z.rpc.model.RpcResponse;
 import com.z.rpc.model.ServiceMetaInfo;
@@ -18,6 +20,7 @@ import com.z.rpc.serializer.SerializerFactory;
 import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -43,7 +46,7 @@ public class ServiceProxy implements InvocationHandler {
             //序列化
             byte[] bodyBytes = serializer.serialize(rpcRequest);
 
-            //todo 这里地址被硬编码了，需要使用注册中心和服务发现机制
+            // 这里地址被硬编码了，需要使用注册中心和服务发现机制
             RpcConfig rpcConfig = RpcApplication.getRpcConfig();
             Registry registry = RegistryFactory.getInstance(rpcConfig.getRegistryConfig().getRegistry());
             ServiceMetaInfo serviceMetaInfo = new ServiceMetaInfo();
@@ -54,6 +57,12 @@ public class ServiceProxy implements InvocationHandler {
                 throw new RuntimeException("暂无服务地址");
             }
 
+//            //负载均衡
+//            LoadBalancer loadBalancer = LoadBalancerFactory.getInstance(rpcConfig.getLoadBalancer());
+//            //将调用方法名（请求路径）作为负载均衡参数
+//            HashMap<String, Object> requestParam = new HashMap<>();
+//            requestParam.put("methodName",rpcRequest.getMethodName());
+//            ServiceMetaInfo selectedServiceMetaInfo = loadBalancer.select(requestParam, serviceMetaInfoList);
             //暂时取第一个
             ServiceMetaInfo selectServiceMetaInfo_zore = serviceMetaInfoList.get(0);
 

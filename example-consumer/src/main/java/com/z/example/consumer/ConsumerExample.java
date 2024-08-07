@@ -3,13 +3,12 @@ package com.z.example.consumer;
 import cn.hutool.core.util.RandomUtil;
 import com.z.example.common.model.User;
 import com.z.example.common.service.UserService;
+import com.z.rpc.bootstrap.ConsumerBootstrap;
 import com.z.rpc.proxy.ServiceProxyFactory;
 
 public class ConsumerExample {
     public static void main(String[] args) {
-
-//        RpcConfig rpc = ConfigUtils.loadConfig(RpcConfig.class, "rpc");
-//        System.out.println(rpc);
+        ConsumerBootstrap.init();
 
         UserService userService = ServiceProxyFactory.getProxy(UserService.class);
         User user = new User();
@@ -23,8 +22,5 @@ public class ConsumerExample {
             System.out.println("user is null");
 
         }
-//        short number = userService.getNumber();
-//
-//        System.out.println(number);
     }
 }
